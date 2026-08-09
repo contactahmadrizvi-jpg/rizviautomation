@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rizvi Automation | AI Front Desk & Booking Receptionist</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        base: {
+                            white: '#FFFFFF',
+                            off: '#FAFAFA',
+                            surface: '#F4F4F5',
+                        },
+                        brand: {
+                            black: '#09090B',
+                            dark: '#0F172A',
+                            gray: '#52525B',
+                            muted: '#71717A',
+                            accent: '#2563EB',
+                        }
+                    },
+                    boxShadow: {
+                        'card': '0 10px 40px -10px rgba(0,0,0,0.08)',
+                        'float': '0 12px 32px -8px rgba(0, 0, 0, 0.08)',
+                    },
+                    letterSpacing: {
+                        tight: '-0.02em',
+                        tighter: '-0.03em',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            background-color: #FAFAFA;
+            color: #09090B;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .bg-grid {
+            background-image: 
+                linear-gradient(to right, rgba(0,0,0,0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0,0,0,0.02) 1px, transparent 1px);
+            background-size: 32px 32px;
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        .bento-card {
+            background: #FFFFFF;
+            border: 1px solid rgba(0,0,0,0.06);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .bento-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.08);
+            border-color: rgba(37, 99, 235, 0.15);
+        }
+
+        /* Modal Animation */
+        #demo-modal {
+            transition: opacity 0.2s ease;
+        }
+        #demo-modal.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #demo-modal:not(.hidden) {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: scale(0.95);
+        }
+        #demo-modal:not(.hidden) .modal-content {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="relative pb-24 text-base">
+
+    <!-- FLOATING NAVIGATION -->
+    <div class="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+        <nav class="pointer-events-auto bg-white/90 backdrop-blur-xl border border-black/10 rounded-full px-5 py-3 flex items-center gap-6 shadow-float">
+            <a href="#" class="text-lg font-extrabold tracking-tighter flex items-center gap-2">
+                <div class="w-2.5 h-2.5 rounded-full bg-brand-accent"></div>
+                Rizvi Automation
+            </a>
+            <div class="hidden md:flex items-center gap-6 text-[14px] font-medium text-brand-gray">
+                <a href="#problem-revenue" class="hover:text-brand-black transition-colors">Why It Pays For Itself</a>
+                <a href="#how-it-works" class="hover:text-brand-black transition-colors">Features</a>
+                <a href="#pricing" class="hover:text-brand-black transition-colors">Pricing</a>
+            </div>
+            <button onclick="openModal()" class="bg-brand-black text-white px-5 py-2 rounded-full text-[13px] font-semibold hover:bg-brand-accent transition-colors">
+                Call Live Demo
+            </button>
+        </nav>
+    </div>
+
+    <!-- BACKGROUND GRID -->
+    <div class="absolute inset-0 bg-grid pointer-events-none z-[-1] h-[100vh]"></div>
+
+    <!-- HERO SECTION -->
+    <section class="pt-40 pb-16 px-6 sm:px-12 max-w-[1200px] mx-auto">
+        <div class="max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-black/10 bg-white shadow-sm mb-6">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-accent"></span>
+                </span>
+                <span class="text-[12px] font-semibold text-brand-black tracking-tight">Your 24/7 AI Receptionist</span>
+            </div>
+            
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-brand-black mb-6 tracking-tighter leading-[1.05]">
+                Never miss another customer call again.
+            </h1>
+            
+            <p class="text-lg text-brand-gray max-w-2xl leading-relaxed mb-8">
+                Get an inbound AI front desk receptionist that handles all incoming queries, books appointments straight into your calendar, and sends automatic SMS follow-ups—in multiple languages, 24/7.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center gap-3">
+                <a href="#pricing" class="w-full sm:w-auto px-6 py-3.5 bg-brand-accent text-white rounded-xl text-[15px] font-semibold hover:bg-blue-700 transition-all shadow-md flex items-center justify-center gap-2">
+                    View Pricing Plans
+                </a>
+                <button onclick="openModal()" class="w-full sm:w-auto px-6 py-3.5 bg-white border border-black/10 text-brand-black rounded-xl text-[15px] font-semibold hover:bg-base-off transition-all flex items-center justify-center gap-2 group">
+                    <i data-lucide="phone" class="w-4 h-4 text-brand-accent group-hover:animate-pulse"></i>
+                    Call Live Demo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY IT PAYS FOR ITSELF -->
+    <section id="problem-revenue" class="py-24 px-6 sm:px-12 max-w-[1200px] mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-200 bg-blue-50 text-brand-accent text-[12px] font-bold uppercase tracking-wider mb-4">
+                The Revenue Impact
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tighter mb-4 text-brand-black">Why Rizvi Automation Pays For Itself</h2>
+            <p class="text-[15px] text-brand-gray">Every missed call is revenue handed directly to your competitors. Here is how our AI front desk stops the leak.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-6 mb-12">
+            <!-- Card 1 -->
+            <div class="bento-card p-8 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center mb-6 border border-red-100">
+                        <i data-lucide="phone-off" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-[11px] font-bold text-red-600 uppercase tracking-widest block mb-1">The Core Leak</span>
+                    <h3 class="text-xl font-bold tracking-tight text-brand-black mb-3">62% of Calls Go Unanswered</h3>
+                    <p class="text-[14px] text-brand-gray leading-relaxed">
+                        When your team is busy on job sites or with customers, incoming calls ring out to voicemail. Most callers hang up instantly and dial your competitor instead.
+                    </p>
+                </div>
+                <div class="mt-8 pt-4 border-t border-black/5 flex items-center gap-2 text-[13px] font-semibold text-red-600">
+                    <i data-lucide="trending-down" class="w-4 h-4"></i> Instant loss of high-intent clients
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bento-card p-8 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-6 border border-amber-100">
+                        <i data-lucide="moon" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-[11px] font-bold text-amber-600 uppercase tracking-widest block mb-1">After-Hours Dead Zone</span>
+                    <h3 class="text-xl font-bold tracking-tight text-brand-black mb-3">Leads Search Nights & Weekends</h3>
+                    <p class="text-[14px] text-brand-gray leading-relaxed">
+                        Over 40% of booking requests happen outside of standard 9-to-5 business hours. If your office is closed, those customer opportunities vanish before morning.
+                    </p>
+                </div>
+                <div class="mt-8 pt-4 border-t border-black/5 flex items-center gap-2 text-[13px] font-semibold text-amber-600">
+                    <i data-lucide="clock" class="w-4 h-4"></i> Zero capture outside working hours
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bento-card p-8 bg-brand-dark text-white border-transparent flex flex-col justify-between shadow-card">
+                <div>
+                    <div class="w-12 h-12 rounded-2xl bg-white/10 text-brand-accent flex items-center justify-center mb-6 border border-white/10">
+                        <i data-lucide="zap" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <span class="text-[11px] font-bold text-blue-400 uppercase tracking-widest block mb-1">The Rizvi Advantage</span>
+                    <h3 class="text-xl font-bold tracking-tight text-white mb-3">Instant Pickup & Booking</h3>
+                    <p class="text-[14px] text-gray-300 leading-relaxed">
+                        The AI answers on ring one, answers custom queries, checks live calendars, secures bookings, and dispatches instant SMS confirmations automatically.
+                    </p>
+                </div>
+                <div class="mt-8 pt-4 border-t border-white/10 flex items-center gap-2 text-[13px] font-semibold text-blue-400">
+                    <i data-lucide="check-circle" class="w-4 h-4"></i> 100% automated conversion capture
+                </div>
+            </div>
+        </div>
+
+        <!-- ROI Banner -->
+        <div class="bento-card p-8 sm:p-10 bg-white border border-black/10 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="max-w-xl">
+                <div class="inline-flex items-center gap-2 text-[12px] font-bold text-brand-accent uppercase tracking-wider mb-2">
+                    <i data-lucide="calculator" class="w-4 h-4"></i> Simple ROI Breakdown
+                </div>
+                <h4 class="text-2xl font-bold tracking-tight text-brand-black mb-2">Securing just 2 extra bookings per month pays for the entire platform.</h4>
+                <p class="text-[14px] text-brand-gray leading-relaxed">
+                    Everything past your first couple of retained clients becomes pure, unadulterated profit added straight to your bottom line with zero extra staff overhead.
+                </p>
+            </div>
+            <div class="w-full md:w-auto text-center md:text-right shrink-0 bg-base-off p-6 rounded-2xl border border-black/5">
+                <div class="text-[13px] font-semibold text-brand-muted mb-1">Estimated Monthly Gain</div>
+                <div class="text-3xl sm:text-4xl font-extrabold text-brand-black tracking-tight">+ 4 to 12 Deals</div>
+                <div class="text-[12px] text-brand-accent font-medium mt-1">Converted from missed calls</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BENTO BOX FEATURES -->
+    <section id="how-it-works" class="py-24 px-6 sm:px-12 max-w-[1200px] mx-auto border-t border-black/5">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <h2 class="text-3xl font-extrabold tracking-tight mb-3">Everything Your Front Desk Needs</h2>
+            <p class="text-[15px] text-brand-gray">Built explicitly for local service operators who want clean automation without complexity.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="bento-card p-8 bg-white">
+                <div class="w-10 h-10 rounded-lg bg-base-surface flex items-center justify-center mb-6">
+                    <i data-lucide="calendar-check" class="w-5 h-5 text-brand-black"></i>
+                </div>
+                <h3 class="text-lg font-bold tracking-tight mb-2">Automated Bookings</h3>
+                <p class="text-[14px] text-brand-gray leading-relaxed">
+                    The AI checks your actual availability and locks in appointments directly on your calendar while talking to the customer.
+                </p>
+            </div>
+
+            <div class="bento-card p-8 bg-white border border-brand-accent/20">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-6">
+                    <i data-lucide="message-square" class="w-5 h-5 text-brand-accent"></i>
+                </div>
+                <h3 class="text-lg font-bold tracking-tight mb-2">Instant SMS Follow-ups</h3>
+                <p class="text-[14px] text-brand-gray leading-relaxed">
+                    After a call finishes, the system instantly texts the caller their booking confirmation or requested information.
+                </p>
+            </div>
+
+            <div class="bento-card p-8 bg-white">
+                <div class="w-10 h-10 rounded-lg bg-base-surface flex items-center justify-center mb-6">
+                    <i data-lucide="globe" class="w-5 h-5 text-brand-black"></i>
+                </div>
+                <h3 class="text-lg font-bold tracking-tight mb-2">Multi-Language Support</h3>
+                <p class="text-[14px] text-brand-gray leading-relaxed">
+                    Serve your entire community. The AI detects the caller's language and seamlessly switches to Spanish, French, and more.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING TIER SECTION (Updated with $1,500 Setup Fee Included) -->
+    <section id="pricing" class="py-24 px-6 sm:px-12 bg-base-off border-y border-black/5">
+        <div class="max-w-[1200px] mx-auto">
+            <h2 class="text-3xl font-extrabold tracking-tight mb-4 text-center">Simple, Transparent Pricing</h2>
+            <p class="text-[15px] text-brand-gray text-center mb-4 max-w-lg mx-auto">Choose the tier that matches your call volume. Scale up or cancel anytime with zero contracts.</p>
+            
+            <!-- One-time setup fee announcement banner -->
+            <div class="max-w-md mx-auto mb-16 bg-blue-50 border border-blue-200 rounded-2xl p-4 text-center flex items-center justify-center gap-3">
+                <i data-lucide="info" class="w-5 h-5 text-brand-accent shrink-0"></i>
+                <p class="text-[13px] font-semibold text-brand-dark">
+                    Includes a <span class="text-brand-accent font-bold">$1,500 One-Time Setup Fee</span> for custom voice training & CRM configuration.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                
+                <!-- Starter Tier -->
+                <div class="bg-white rounded-[24px] p-8 border border-black/5 shadow-card flex flex-col">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">Starter</h3>
+                        <span class="text-[11px] font-bold text-brand-gray uppercase tracking-wider">For Small Biz</span>
+                    </div>
+                    <div class="flex items-baseline gap-1 mb-1">
+                        <span class="text-5xl font-extrabold tracking-tighter">$299</span>
+                        <span class="text-[15px] font-medium text-brand-gray">/ month</span>
+                    </div>
+                    <div class="text-[12px] font-semibold text-brand-accent mb-4">+ $1,500 one-time setup fee</div>
+                    <p class="text-[14px] text-brand-gray mb-8 h-12">Perfect for local services testing automated receptionist coverage.</p>
+                    
+                    <hr class="border-black/5 mb-8">
+                    
+                    <ul class="space-y-4 mb-10 flex-1">
+                        <li class="flex items-center gap-3 text-[14px] font-medium text-brand-black">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-accent shrink-0"></i> Custom Onboarding & Setup ($1,500 value)
+                        </li>
+                        <li class="flex items-center gap-3 text-[14px] font-medium text-brand-black">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-accent shrink-0"></i> 500 Included Minutes / mo
+                        </li>
+                        <li class="flex items-center gap-3 text-[14px] font-medium text-brand-black">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-accent shrink-0"></i> 1 Dedicated Phone Line
+                        </li>
+                        <li class="flex items-center gap-3 text-[14px] font-medium text-brand-black">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-accent shrink-0"></i> Cal.com & Google Calendar Sync
+                        </li>
+                        <li class="flex items-center gap-3 text-[14px] font-medium text-brand-black">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-accent shrink-0"></i> Email Call Summaries
+                        </li>
+                    </ul>
+                    
+                    <button onclick="openModal()" class="w-full py-3.5 rounded-xl border border-black/10 bg-white text-brand-black font-semibold hover:bg-gray-50 transition-colors">
+                        Select Starter
+                    </button>
+                </div>
+
+                <!-- Growth Tier -->
+                <div class="bg-white rounded-[24px] p-8 border border-black/5 shadow-card flex flex-col relative transform lg:-translate-y-4">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-accent text-white text-[11px] font-bold uppercase tracking-wider py-1 px-3 rounded-full">
+                        Most Popular
+                    </div>
+                    <div class="flex justify-between items-center mb-4 mt-2">
+                        <h3 class="text-xl font-bold">Growth</h3>
+                    </div>
+                    <div class="flex items-baseline gap-1 mb-1">
+                        <span class="text-5xl font-extrabold tracking-tighter">$599</span>
+                        <span class="text-[15px] font-medium text-brand-gray">/ month</span>
+                    </div>
+                    <div class="text-[12px] font-semibold text-brand-accent mb-4">+ $1,500 one-time setup fee</div>
+                    <p class="text-[14px] text-brand-gray mb-8 h-12">Designed for established practices needing high-capacity handling.</p>
+                    
+                    <hr class="border-black/5 mb-8">
+                    
+                    <ul class="space-y-4 mb-10 flex-1">
+                        <li class="flex items-center gap-3 text-[14px] font-medium text-brand-black">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-accent shrink-0"></i> Advanced Custom Setup & Integration
+                        </li>
+                        <li class="flex items-center gap-3 text-[14px] font-medium text-brand-black">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-accent shrink-0"></i> 1,500 Included Minutes / mo
+                        </li>
+                        <li class="flex items-center gap-3 text-[14px] font-medium text-brand-black">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-accent shrink-0"></i> 3 Dedicated Phone Lines
+                        </li>
+                        <li class="flex items-center gap-3 text-[14px] font-medium text-brand-black">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-accent shrink-0"></i> Instant SMS Auto-Followups
+                        </li>
+                        <li class="flex items-center gap-3 text-[14px] font-medium text-brand-black">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-accent shrink-0"></i> Live Warm Call Transfers
+                        </li>
+                    </ul>
+                    
+                    <button onclick="openModal()" class="w-full py-3.5 rounded-xl border border-black/10 bg-white text-brand-black font-semibold hover:bg-gray-50 transition-colors">
+                        Select Growth
+                    </button>
+                </div>
+
+                <!-- Unlimited / Pro Tier -->
+                <div class="bg-brand-dark text-white rounded-[24px] p-8 shadow-card flex flex-col">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">Unlimited / Pro</h3>
+                        <span class="text-[11px] font-bold text-gray-300 uppercase tracking-wider">High Volume</span>
+                    </div>
+                    <div class="flex items-baseline gap-1 mb-1">
+                        <span class="text-5xl font-extrabold tracking-tighter text-white">$799</span>
+                        <span class="text-[15px] font-medium text-gray-400">/ month</span>
+                    </div>
+                    <div class="text-[12px] font-semibold text-blue-400 mb-4">+ $1,500 one-time setup fee</div>
+                    <p class="text-[14px] text-gray-400 mb-8 h-12">Unrestricted scale for enterprise firms and busy agencies.</p>
+                    
+                    <hr class="border-white/10 mb-8">
+                    
+                    <ul class="space-y-4 mb-10 flex-1">
+                        <li class="flex items-center gap-3 text-[14px] font-medium">
+                            <i data-lucide="check" class="w-5 h-5 text-white shrink-0"></i> White-glove Enterprise Setup
+                        </li>
+                        <li class="flex items-center gap-3 text-[14px] font-medium">
+                            <i data-lucide="check" class="w-5 h-5 text-white shrink-0"></i> Unlimited Included Minutes
+                        </li>
+                        <li class="flex items-center gap-3 text-[14px] font-medium">
+                            <i data-lucide="check" class="w-5 h-5 text-white shrink-0"></i> 10+ Dedicated Phone Lines
+                        </li>
+                        <li class="flex items-center gap-3 text-[14px] font-medium">
+                            <i data-lucide="check" class="w-5 h-5 text-white shrink-0"></i> Custom Cloned Voice Studio
+                        </li>
+                        <li class="flex items-center gap-3 text-[14px] font-medium">
+                            <i data-lucide="check" class="w-5 h-5 text-white shrink-0"></i> Dedicated Account Manager
+                        </li>
+                    </ul>
+                    
+                    <button onclick="openModal()" class="w-full py-3.5 rounded-xl bg-brand-accent text-white font-semibold hover:bg-blue-600 transition-colors">
+                        Get Unlimited Access
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- LIVE DEMO MODAL -->
+    <div id="demo-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-brand-black/60 backdrop-blur-sm p-4">
+        <div class="modal-content bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden">
+            <div class="p-6 pb-4 border-b border-black/5 flex justify-between items-center bg-base-off">
+                <h3 class="text-xl font-bold text-brand-black">Select Your Industry</h3>
+                <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 transition-colors text-brand-gray">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            
+            <div id="niche-selection" class="p-6 space-y-3">
+                <p class="text-[14px] text-brand-gray mb-4">Choose a niche to test an AI agent specifically trained for that business.</p>
+                
+                <button onclick="showNumber('dentist')" class="w-full flex items-center gap-4 p-4 rounded-xl border border-black/10 hover:border-brand-accent hover:bg-blue-50 transition-all text-left group">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-brand-accent group-hover:scale-110 transition-transform">
+                        <i data-lucide="stethoscope" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-[15px] text-brand-black">Dental Clinic AI</div>
+                        <div class="text-[13px] text-brand-gray">Tests appointments & routine queries</div>
+                    </div>
+                </button>
+
+                <button onclick="showNumber('law')" class="w-full flex items-center gap-4 p-4 rounded-xl border border-black/10 hover:border-brand-accent hover:bg-blue-50 transition-all text-left group">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-brand-accent group-hover:scale-110 transition-transform">
+                        <i data-lucide="scale" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-[15px] text-brand-black">Law Firm AI</div>
+                        <div class="text-[13px] text-brand-gray">Tests legal intake & scheduling</div>
+                    </div>
+                </button>
+
+                <button onclick="showNumber('hvac')" class="w-full flex items-center gap-4 p-4 rounded-xl border border-black/10 hover:border-brand-accent hover:bg-blue-50 transition-all text-left group">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-brand-accent group-hover:scale-110 transition-transform">
+                        <i data-lucide="wrench" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-[15px] text-brand-black">HVAC / Contractor AI</div>
+                        <div class="text-[13px] text-brand-gray">Tests dispatch & emergency routing</div>
+                    </div>
+                </button>
+            </div>
+
+            <div id="number-display" class="hidden p-8 text-center">
+                <div class="w-16 h-16 bg-blue-50 text-brand-accent rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="phone-call" class="w-8 h-8 animate-pulse"></i>
+                </div>
+                <h4 id="agent-title" class="text-lg font-bold text-brand-black mb-1">Agent Ready</h4>
+                <p class="text-[14px] text-brand-gray mb-6">Call the number below to test the live voice engine.</p>
+                
+                <a id="call-link" href="#" class="block w-full py-4 rounded-xl bg-brand-black text-white text-2xl font-extrabold hover:bg-brand-accent transition-colors tracking-tight"></a>
+                
+                <button onclick="resetModal()" class="mt-6 text-[13px] font-semibold text-brand-gray hover:text-brand-black flex items-center justify-center gap-1 mx-auto">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to options
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-black/5 py-10 px-6 sm:px-12 max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="text-lg font-extrabold tracking-tighter flex items-center gap-2">
+            <div class="w-2.5 h-2.5 rounded-full bg-brand-black"></div>
+            Rizvi Automation
+        </div>
+        <p class="text-[13px] text-brand-muted">&copy; 2026 Rizvi Automation. Building intelligent local businesses.</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const modal = document.getElementById('demo-modal');
+        const selectionView = document.getElementById('niche-selection');
+        const numberView = document.getElementById('number-display');
+        const agentTitle = document.getElementById('agent-title');
+        const callLink = document.getElementById('call-link');
+
+        const demoNumbers = {
+            dentist: { title: "Dental AI Agent", phone: "+1 (800) 555-0101", raw: "tel:+18005550101" },
+            law: { title: "Legal Intake Agent", phone: "+1 (800) 555-0102", raw: "tel:+18005550102" },
+            hvac: { title: "HVAC Dispatch Agent", phone: "+1 (800) 555-0103", raw: "tel:+18005550103" }
+        };
+
+        function openModal() {
+            modal.classList.remove('hidden');
+            resetModal();
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        function showNumber(niche) {
+            selectionView.classList.add('hidden');
+            numberView.classList.remove('hidden');
+            
+            agentTitle.innerText = demoNumbers[niche].title;
+            callLink.innerText = demoNumbers[niche].phone;
+            callLink.href = demoNumbers[niche].raw;
+        }
+
+        function resetModal() {
+            selectionView.classList.remove('hidden');
+            numberView.classList.add('hidden');
+        }
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
